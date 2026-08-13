@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Localização | Eloá 4 anos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#D42E2E;--red-dark:#A61B1B;--cream:#FCF1DA;--green:#4A7C3A;--wood:#8B5A2B;--ink:#4A2E1A;}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Quicksand',sans-serif;background:var(--cream);min-height:100vh;padding:28px 18px 60px;color:var(--ink);}
+  .wrap{max-width:460px;margin:0 auto;}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--red-dark);text-decoration:none;font-weight:700;font-size:.9rem;margin-bottom:14px;}
+  .card{background:#fffaf0;border:2px dashed var(--red);border-radius:26px;padding:30px 22px;position:relative;box-shadow:0 10px 30px rgba(166,27,27,.1);text-align:center;}
+  .card::before{content:"🍓";position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:1.6rem;line-height:1;background:var(--cream);width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+  h1{font-family:'Caveat',cursive;font-size:2.5rem;color:var(--red);margin-top:8px;}
+  .pin{font-size:2.4rem;margin:18px 0 6px;}
+  .venue{font-family:'Caveat',cursive;font-size:1.7rem;color:var(--red-dark);}
+  .addr{color:var(--wood);font-size:.92rem;font-weight:600;margin:6px 0 22px;line-height:1.5;}
+  .info-row{display:flex;justify-content:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+  .chip{background:#fff;border:1.5px solid #f0e2c4;border-radius:14px;padding:10px 16px;font-weight:700;font-size:.88rem;color:var(--ink);}
+  .maps-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    background:var(--red);color:#fff;text-decoration:none;
+    border-radius:16px;padding:15px;font-weight:700;font-size:1rem;
+  }
+  .maps-btn:active{transform:scale(.98);}
+  .note{font-size:.8rem;color:#a08a68;margin-top:16px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← voltar ao convite</a>
+  <div class="card">
+    <h1>Localização</h1>
+    <div class="pin">📍</div>
+    <div class="venue">Buffet Doce Bosque</div>
+    <div class="addr">Rua das Framboesas, 245<br>Curitiba – PR</div>
+
+    <div class="info-row">
+      <div class="chip">📅 03/10</div>
+      <div class="chip">🕒 15h</div>
+    </div>
+
+    <a class="maps-btn" href="https://www.google.com/maps/search/?api=1&query=Buffet+Doce+Bosque+Curitiba+PR" target="_blank" rel="noopener">
+      🗺️ Abrir no Google Maps
+    </a>
+    <p class="note">Estacionamento no próprio local 🚗🍓</p>
+  </div>
+</div>
+</body>
+</html>

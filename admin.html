@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | Eloá 4 anos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#D42E2E;--red-dark:#A61B1B;--cream:#FCF1DA;--green:#4A7C3A;--wood:#8B5A2B;--ink:#4A2E1A;}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Quicksand',sans-serif;background:#f6f0df;min-height:100vh;color:var(--ink);}
+
+  /* LOGIN */
+  #loginScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .login-card{background:#fffaf0;border:2px dashed var(--red);border-radius:24px;padding:32px 24px;max-width:340px;width:100%;text-align:center;}
+  .login-card h1{font-family:'Caveat',cursive;font-size:2.2rem;color:var(--red);margin-bottom:4px;}
+  .login-card p{font-size:.85rem;color:var(--wood);margin-bottom:18px;}
+  .login-card input{width:100%;padding:13px;border-radius:14px;border:1.5px solid #f0e2c4;font-size:1.1rem;text-align:center;letter-spacing:.2em;margin-bottom:14px;}
+  .login-card button{width:100%;background:var(--red);color:#fff;border:none;border-radius:14px;padding:13px;font-weight:700;font-size:1rem;}
+  .login-error{color:var(--red-dark);font-size:.8rem;margin-top:8px;display:none;}
+
+  /* DASHBOARD */
+  #dashboard{display:none;padding:20px 16px 60px;max-width:640px;margin:0 auto;}
+  .top-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .top-bar h1{font-family:'Caveat',cursive;font-size:1.9rem;color:var(--red);}
+  .refresh-btn{background:#fff;border:1.5px solid #f0e2c4;border-radius:12px;padding:8px 14px;font-weight:700;font-size:.85rem;color:var(--ink);}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+  .stat{background:#fff;border-radius:16px;padding:14px 8px;text-align:center;border:1.5px solid #f0e2c4;}
+  .stat .num{font-size:1.5rem;font-weight:700;color:var(--red-dark);}
+  .stat .label{font-size:.72rem;color:var(--wood);font-weight:600;margin-top:2px;}
+
+  .filters{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+  .filters button{
+    flex:1;min-width:90px;background:#fff;border:1.5px solid #f0e2c4;border-radius:12px;
+    padding:9px;font-weight:700;font-size:.8rem;color:var(--wood);
+  }
+  .filters button.active{background:var(--red);color:#fff;border-color:var(--red);}
+
+  .search-admin{width:100%;padding:12px 14px;border-radius:14px;border:1.5px solid #f0e2c4;font-size:.95rem;margin-bottom:14px;}
+
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:14px;overflow:hidden;}
+  thead th{background:#fceee0;text-align:left;padding:10px 12px;font-size:.72rem;color:var(--wood);text-transform:uppercase;letter-spacing:.03em;}
+  tbody td{padding:11px 12px;font-size:.86rem;border-top:1px solid #f4ead4;}
+  tbody tr:active{background:#fdf6ea;}
+  .status-pill{font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+  .status-pill.confirmado{background:#dcefd2;color:var(--green);}
+  .status-pill.pendente{background:#fdeccd;color:#a8711a;}
+  .status-pill.recusado{background:#f7dede;color:var(--red-dark);}
+  .empty-state{text-align:center;padding:40px 10px;color:#a08a68;font-size:.88rem;}
+  .loading{text-align:center;padding:40px 0;color:var(--wood);}
+</style>
+</head>
+<body>
+
+<div id="loginScreen">
+  <div class="login-card">
+    <h1>Painel Admin</h1>
+    <p>Confirmações — Eloá 4 anos 🍓</p>
+    <input type="password" id="pinInput" placeholder="PIN" inputmode="numeric" maxlength="6">
+    <button id="loginBtn">Entrar</button>
+    <p class="login-error" id="loginError">PIN incorreto, tenta de novo!</p>
+  </div>
+</div>
+
+<div id="dashboard">
+  <div class="top-bar">
+    <h1>Confirmações</h1>
+    <button class="refresh-btn" id="refreshBtn">↻ Atualizar</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num" id="statTotal">–</div><div class="label">Convidados</div></div>
+    <div class="stat"><div class="num" id="statConfirmed">–</div><div class="label">Confirmados</div></div>
+    <div class="stat"><div class="num" id="statPeople">–</div><div class="label">Pessoas</div></div>
+  </div>
+
+  <div class="filters">
+    <button class="active" data-filter="todos">Todos</button>
+    <button data-filter="confirmado">Confirmados</button>
+    <button data-filter="pendente">Pendentes</button>
+    <button data-filter="recusado">Recusaram</button>
+  </div>
+
+  <input type="text" class="search-admin" id="adminSearch" placeholder="Buscar convidado...">
+
+  <div id="tableWrap">
+    <div class="loading">Carregando...</div>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   CONFIGURAÇÃO
+   ========================================================= */
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzLqZ-ZU27OxdWqdk-wb9ZV0juwmN6vTtKup_IjdQacotk4Bw8JYmOasIk0YETowYlzrA/exec";
+const ADMIN_PIN = "0410"; // troque para o PIN que quiser (ex: data da Eloá)
+
+let allGuests = [];
+let currentFilter = 'todos';
+
+// login (PIN salvo localmente só pra não pedir toda hora nesse aparelho)
+if(localStorage.getItem('eloa_admin_ok') === '1'){
+  showDashboard();
+}
+document.getElementById('loginBtn').addEventListener('click', tryLogin);
+document.getElementById('pinInput').addEventListener('keydown', e => { if(e.key === 'Enter') tryLogin(); });
+
+function tryLogin(){
+  const val = document.getElementById('pinInput').value;
+  if(val === ADMIN_PIN){
+    localStorage.setItem('eloa_admin_ok', '1');
+    showDashboard();
+  }else{
+    document.getElementById('loginError').style.display = 'block';
+  }
+}
+
+function showDashboard(){
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadData();
+}
+
+document.getElementById('refreshBtn').addEventListener('click', loadData);
+
+async function loadData(){
+  document.getElementById('tableWrap').innerHTML = '<div class="loading">Carregando...</div>';
+  try{
+    const res = await fetch(`${GAS_URL}?action=list`);
+    const data = await res.json();
+    allGuests = data.guests || [];
+  }catch(err){
+    allGuests = [];
+  }
+  render();
+}
+
+document.querySelectorAll('.filters button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+document.getElementById('adminSearch').addEventListener('input', render);
+
+function normalize(str){
+  return (str||'').toString().normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+
+function render(){
+  const q = normalize(document.getElementById('adminSearch').value);
+  let list = allGuests.filter(g => {
+    const status = (g.status || '').toLowerCase();
+    if(currentFilter === 'confirmado' && status !== 'confirmado') return false;
+    if(currentFilter === 'recusado' && status !== 'recusado') return false;
+    if(currentFilter === 'pendente' && (status === 'confirmado' || status === 'recusado')) return false;
+    if(q && !normalize(g.nome).includes(q)) return false;
+    return true;
+  });
+
+  const total = allGuests.length;
+  const confirmedGuests = allGuests.filter(g => (g.status||'').toLowerCase() === 'confirmado');
+  const totalPeople = confirmedGuests.reduce((sum,g) => sum + (parseInt(g.adultos)||0) + (parseInt(g.criancas)||0), 0);
+
+  document.getElementById('statTotal').textContent = total;
+  document.getElementById('statConfirmed').textContent = confirmedGuests.length;
+  document.getElementById('statPeople').textContent = totalPeople;
+
+  const wrap = document.getElementById('tableWrap');
+  if(list.length === 0){
+    wrap.innerHTML = '<div class="empty-state">Nenhum convidado encontrado 🍓</div>';
+    return;
+  }
+
+  let html = '<table><thead><tr><th>Nome</th><th>Qtd</th><th>Status</th></tr></thead><tbody>';
+  list.forEach(g => {
+    const status = (g.status||'').toLowerCase();
+    const confirmed = status === 'confirmado';
+    const declined = status === 'recusado';
+    const pillClass = confirmed ? 'confirmado' : (declined ? 'recusado' : 'pendente');
+    const pillLabel = confirmed ? 'Confirmado' : (declined ? 'Recusou' : 'Pendente');
+    const a = parseInt(g.adultos)||0, c = parseInt(g.criancas)||0;
+    const qtyLabel = c > 0 ? `${a}A + ${c}C` : `${a}A`;
+    html += `<tr>
+      <td>${g.nome}${g.telefone ? `<br><span style="color:#a08a68;font-size:.75rem;">${g.telefone}</span>` : ''}</td>
+      <td>${confirmed ? qtyLabel : '–'}</td>
+      <td><span class="status-pill ${pillClass}">${pillLabel}</span></td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+</script>
+</body>
+</html>

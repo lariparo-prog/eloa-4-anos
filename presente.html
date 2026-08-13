@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sugestões de presente | Eloá 4 anos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--red:#D42E2E;--red-dark:#A61B1B;--cream:#FCF1DA;--green:#4A7C3A;--wood:#8B5A2B;--ink:#4A2E1A;}
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  body{font-family:'Quicksand',sans-serif;background:var(--cream);min-height:100vh;padding:28px 18px 60px;color:var(--ink);}
+  .wrap{max-width:460px;margin:0 auto;}
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--red-dark);text-decoration:none;font-weight:700;font-size:.9rem;margin-bottom:14px;}
+  .card{background:#fffaf0;border:2px dashed var(--red);border-radius:26px;padding:30px 22px;position:relative;box-shadow:0 10px 30px rgba(166,27,27,.1);}
+  .card::before{content:"🍓";position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:1.6rem;line-height:1;background:var(--cream);width:50px;height:50px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
+  h1{font-family:'Caveat',cursive;font-size:2.5rem;text-align:center;color:var(--red);margin-top:8px;}
+  p.sub{text-align:center;color:var(--wood);font-size:.9rem;font-weight:600;margin:6px 0 26px;}
+
+  .item{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+  .item .emoji{font-size:2.3rem;width:60px;height:60px;background:#fceee0;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;}
+  .item .info b{font-family:'Caveat',cursive;font-size:1.5rem;color:var(--red-dark);display:block;}
+  .item .info span{font-size:.85rem;color:var(--wood);}
+  hr{border:none;border-top:1px dashed #e6c9c9;margin:0 0 22px;}
+
+  .pix-box{
+    background:#fff;border:1.5px solid #f0e2c4;border-radius:18px;padding:16px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;
+    cursor:pointer;transition:transform .1s;
+  }
+  .pix-box:active{transform:scale(.98);}
+  .pix-box .left{display:flex;align-items:center;gap:12px;}
+  .pix-box .icon{font-size:1.6rem;}
+  .pix-box b{font-family:'Caveat',cursive;font-size:1.4rem;color:var(--red-dark);display:block;}
+  .pix-box span{font-size:.78rem;color:var(--wood);}
+  .pix-box .copy-tag{font-size:.75rem;font-weight:700;color:var(--green);background:#e3f1d8;padding:5px 10px;border-radius:20px;white-space:nowrap;}
+  .pix-key{text-align:center;font-size:.9rem;color:var(--ink);font-weight:700;margin-top:10px;letter-spacing:.02em;}
+
+  .thanks{text-align:center;font-family:'Caveat',cursive;font-size:1.6rem;color:var(--green);margin-top:26px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← voltar ao convite</a>
+  <div class="card">
+    <h1>Sugestões de presente</h1>
+    <p class="sub">Se quiser mimar a Eloá 🍓</p>
+
+    <div class="item">
+      <div class="emoji">👗</div>
+      <div class="info"><b>Roupa</b><span>tamanho 4</span></div>
+    </div>
+    <div class="item">
+      <div class="emoji">👞</div>
+      <div class="info"><b>Calçado</b><span>número 24</span></div>
+    </div>
+    <hr>
+
+    <div class="pix-box" id="pixBox">
+      <div class="left">
+        <div class="icon">💳</div>
+        <div>
+          <b>Pix</b>
+          <span>Toque para copiar</span>
+        </div>
+      </div>
+      <div class="copy-tag" id="copyTag">Copiar</div>
+    </div>
+    <div class="pix-key">+55 17 99144-5659</div>
+
+    <p class="thanks">Sua presença é nosso maior presente 💚</p>
+  </div>
+</div>
+
+<script>
+const pixKey = "+5517991445659";
+const pixBox = document.getElementById('pixBox');
+const copyTag = document.getElementById('copyTag');
+
+pixBox.addEventListener('click', async () => {
+  try{
+    await navigator.clipboard.writeText(pixKey);
+  }catch(err){
+    const ta = document.createElement('textarea');
+    ta.value = pixKey; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  }
+  copyTag.textContent = 'Copiado! ✓';
+  copyTag.style.background = '#dcefd2';
+  setTimeout(() => { copyTag.textContent = 'Copiar'; }, 2000);
+});
+</script>
+</body>
+</html>
