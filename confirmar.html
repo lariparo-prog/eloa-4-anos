@@ -6,7 +6,6 @@
 <title>Confirmar presença | Eloá 4 anos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Caveat:wght@600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
   :root{
     --red:#D42E2E; --red-dark:#A61B1B; --cream:#FCF1DA; --green:#4A7C3A;
@@ -361,13 +360,16 @@ document.getElementById('confirmBtn').addEventListener('click', async () => {
       document.getElementById('ticketQty').textContent = `${total} participante${total>1?'s':''} (${formatQty(selectedGuest)})`;
       document.getElementById('qrcode').innerHTML = '';
       try{
-        new QRCode(document.getElementById('qrcode'), {
-          text: `Eloá 4 anos - ${selectedGuest.nome}`,
-          width: 180, height: 180,
-          typeNumber: 0,
-          correctLevel: QRCode.CorrectLevel.L,
-          colorDark: '#A61B1B', colorLight: '#ffffff'
-        });
+        const qrText = encodeURIComponent(`Eloá 4 anos - ${selectedGuest.nome}`);
+        const img = document.createElement('img');
+        img.src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${qrText}`;
+        img.width = 180;
+        img.height = 180;
+        img.alt = 'QR code de confirmação';
+        img.onerror = () => {
+          document.getElementById('qrcode').innerHTML = '<p style="color:#a08a68;font-size:.85rem;">(QR code indisponível no momento — sua confirmação já foi registrada)</p>';
+        };
+        document.getElementById('qrcode').appendChild(img);
       }catch(err){
         document.getElementById('qrcode').innerHTML = '<p style="color:#a08a68;font-size:.85rem;">(QR code indisponível no momento — sua confirmação já foi registrada)</p>';
       }
