@@ -357,7 +357,7 @@ document.getElementById('confirmBtn').addEventListener('click', async () => {
     try{
       const total = (parseInt(selectedGuest.adultos)||0) + (parseInt(selectedGuest.criancas)||0);
       document.getElementById('ticketName').textContent = selectedGuest.nome;
-      document.getElementById('ticketQty').textContent = `${total} participante${total>1?'s':''} (${formatQty(selectedGuest)})`;
+      document.getElementById('ticketQty').textContent = `${total} participante${total>1?'s':''}`;
       document.getElementById('qrcode').innerHTML = '';
       try{
         const qrText = encodeURIComponent(`Eloá 4 anos - ${selectedGuest.nome}`);
