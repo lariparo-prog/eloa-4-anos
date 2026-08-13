@@ -138,14 +138,44 @@
 
   /* ---- TICKET SCREEN ---- */
   .ticket-header{
-    background:linear-gradient(135deg,#ffe1e1,#fff3d6);
+    background:linear-gradient(135deg,#ff9a9a,#ffd9a0);
     border:3px solid var(--red);
     border-radius:26px 26px 0 0;
-    padding:24px 20px 18px;
+    padding:30px 20px 22px;
     text-align:center;
+    position:relative;
+    overflow:hidden;
   }
-  .ticket-header h1{margin-top:0;font-size:1.9rem;}
-  .ticket-header .age{font-family:'Caveat',cursive;font-size:1.3rem;color:var(--wood);font-weight:700;}
+  .ticket-header::before{
+    content:"✨";
+    position:absolute;top:10px;left:16px;font-size:1.3rem;opacity:.8;
+  }
+  .ticket-header::after{
+    content:"✨";
+    position:absolute;bottom:10px;right:16px;font-size:1.3rem;opacity:.8;
+  }
+  .ticket-header .deco-row{
+    font-size:1.1rem;letter-spacing:.3em;margin-bottom:2px;opacity:.85;
+  }
+  .ticket-header h1{
+    margin-top:0;
+    font-size:3rem;
+    color:#fff;
+    text-shadow:0 3px 0 var(--red-dark), 0 6px 12px rgba(166,27,27,.35);
+    letter-spacing:.01em;
+  }
+  .ticket-header .age{
+    display:inline-block;
+    font-family:'Baloo 2',cursive;
+    font-weight:700;
+    font-size:1.15rem;
+    color:var(--red-dark);
+    background:#fff;
+    padding:5px 18px;
+    border-radius:20px;
+    margin-top:6px;
+    box-shadow:0 3px 0 rgba(166,27,27,.2);
+  }
   .ticket-body{
     background:#fffaf0;border:3px solid var(--red);border-top:none;
     border-radius:0 0 26px 26px;padding:22px 20px 28px;text-align:center;
@@ -215,8 +245,9 @@
   <!-- SCREEN 4: TICKET (confirmed) -->
   <div class="screen" id="screenTicket">
     <div class="ticket-header">
+      <div class="deco-row">🍓 🍓 🍓</div>
       <h1>Eloá</h1>
-      <div class="age">4 aninhos 🍓</div>
+      <div class="age">4 aninhos</div>
     </div>
     <div class="ticket-body">
       <div class="tag">Convidado</div>
