@@ -94,7 +94,7 @@
 /* =========================================================
    CONFIGURAÇÃO
    ========================================================= */
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzLqZ-ZU27OxdWqdk-wb9ZV0juwmN6vTtKup_IjdQacotk4Bw8JYmOasIk0YETowYlzrA/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzc7P6kX5Xo-NV92Py4hLajxW_ZkNnKpRG8-bjA2vx5yhAz3N8h1BTzAQhTOEOJFIEW9g/exec";
 const ADMIN_PIN = "0410"; // troque para o PIN que quiser (ex: data da Eloá)
 
 let allGuests = [];
@@ -186,7 +186,7 @@ function render(){
     const a = parseInt(g.adultos)||0, c = parseInt(g.criancas)||0;
     const qtyLabel = c > 0 ? `${a}A + ${c}C` : `${a}A`;
     html += `<tr>
-      <td>${g.nome}${g.telefone ? `<br><span style="color:#a08a68;font-size:.75rem;">${g.telefone}</span>` : ''}</td>
+      <td>${g.nome}</td>
       <td>${confirmed ? qtyLabel : '–'}</td>
       <td><span class="status-pill ${pillClass}">${pillLabel}</span></td>
     </tr>`;
