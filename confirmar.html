@@ -362,8 +362,10 @@ document.getElementById('confirmBtn').addEventListener('click', async () => {
       document.getElementById('qrcode').innerHTML = '';
       try{
         new QRCode(document.getElementById('qrcode'), {
-          text: `Eloá 4 anos | ${selectedGuest.nome} | ${formatQty(selectedGuest)}`,
+          text: `Eloá 4 anos - ${selectedGuest.nome}`,
           width: 180, height: 180,
+          typeNumber: 0,
+          correctLevel: QRCode.CorrectLevel.L,
           colorDark: '#A61B1B', colorLight: '#ffffff'
         });
       }catch(err){
