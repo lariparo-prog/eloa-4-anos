@@ -348,13 +348,11 @@ document.getElementById('confirmBtn').addEventListener('click', async () => {
 
   const payload = { action: 'confirm', nome: selectedGuest.nome };
 
-  try{
-    await fetch(GAS_URL, {
-      method: 'POST',
-      headers: {'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify(payload)
-    });
-  }catch(err){ /* segue o fluxo mesmo se a rede oscilar */ }
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).catch(() => { /* segue o fluxo mesmo se a rede oscilar */ });
 
   setTimeout(() => {
     const total = (parseInt(selectedGuest.adultos)||0) + (parseInt(selectedGuest.criancas)||0);
@@ -377,13 +375,11 @@ document.getElementById('declineBtn').addEventListener('click', async () => {
   document.getElementById('processingSub').textContent = 'Estamos registrando sua resposta.';
 
   const payload = { action: 'decline', nome: selectedGuest.nome };
-  try{
-    await fetch(GAS_URL, {
-      method: 'POST',
-      headers: {'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify(payload)
-    });
-  }catch(err){ /* segue o fluxo mesmo se a rede oscilar */ }
+  fetch(GAS_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'text/plain;charset=utf-8'},
+    body: JSON.stringify(payload)
+  }).catch(() => { /* segue o fluxo mesmo se a rede oscilar */ });
 
   setTimeout(() => showScreen('declined'), 900);
 });
