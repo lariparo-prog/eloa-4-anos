@@ -355,16 +355,23 @@ document.getElementById('confirmBtn').addEventListener('click', async () => {
   }).catch(() => { /* segue o fluxo mesmo se a rede oscilar */ });
 
   setTimeout(() => {
-    const total = (parseInt(selectedGuest.adultos)||0) + (parseInt(selectedGuest.criancas)||0);
-    document.getElementById('ticketName').textContent = selectedGuest.nome;
-    document.getElementById('ticketQty').textContent = `${total} participante${total>1?'s':''} (${formatQty(selectedGuest)})`;
-    document.getElementById('qrcode').innerHTML = '';
-    new QRCode(document.getElementById('qrcode'), {
-      text: `Eloá 4 anos | ${selectedGuest.nome} | ${formatQty(selectedGuest)}`,
-      width: 180, height: 180,
-      colorDark: '#A61B1B', colorLight: '#ffffff'
-    });
-    showScreen('ticket');
+    try{
+      const total = (parseInt(selectedGuest.adultos)||0) + (parseInt(selectedGuest.criancas)||0);
+      document.getElementById('ticketName').textContent = selectedGuest.nome;
+      document.getElementById('ticketQty').textContent = `${total} participante${total>1?'s':''} (${formatQty(selectedGuest)})`;
+      document.getElementById('qrcode').innerHTML = '';
+      try{
+        new QRCode(document.getElementById('qrcode'), {
+          text: `Eloá 4 anos | ${selectedGuest.nome} | ${formatQty(selectedGuest)}`,
+          width: 180, height: 180,
+          colorDark: '#A61B1B', colorLight: '#ffffff'
+        });
+      }catch(err){
+        document.getElementById('qrcode').innerHTML = '<p style="color:#a08a68;font-size:.85rem;">(QR code indisponível no momento — sua confirmação já foi registrada)</p>';
+      }
+    }finally{
+      showScreen('ticket');
+    }
   }, 1100);
 });
 
